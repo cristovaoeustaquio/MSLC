@@ -8,14 +8,13 @@
 #define WET 2
 #define WATER 3
 #define LIMITE_SECO 30
-#define LIMITE_UMIDO 60
+#define LIMITE_UMIDO 45
 
 const char* ssid = "ClaroWiFi";       // SSID / nome da rede WiFi
 const char* password = "yuri5252";  // Senha da rede WiFi
 
 const char* mqttServer = "test.mosquitto.org"; // Endereço IP do Mosquitto Broker
 const int mqttPort = 1883;                // Porta do Mosquitto Broker
-int long cont = 0;
 
 const char* topico = "mslc/umidade";
 WiFiClient espClient;
@@ -73,6 +72,7 @@ void reconnectMQTT() {
 
 float realizar_leitura_sensor(){
   int value = analogRead(AOUT_PIN); // read the analog value from sensor
+  Serial.println(value);
   float valor_calibrado = calibracao(value);
   return valor_calibrado;
 }
@@ -97,7 +97,6 @@ int classificar_umidade(float umidade){
     return WATER;
   }
 }
-
 
 bool bomba_esta_desligada(){
   return !pump_state;
